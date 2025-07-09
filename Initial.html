@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>League Arena Leaderboard</title>
   <style>
     body { font-family: Arial; background: #0f1923; color: #fff; padding: 20px; }
@@ -30,52 +31,88 @@
     .info { flex-grow: 1; }
     .player-name { font-size: 1.5em; color: #ffd700; }
     .stat { margin: 4px 0; }
+    .loading { text-align: center; color: #ccc; padding: 20px; }
+    .error { color: #ff6b6b; text-align: center; padding: 20px; }
   </style>
 </head>
 <body>
   <h1>Arena Leaderboard (Ranked by Win Rate)</h1>
-  <div id="leaderboard"></div>
+  <div id="leaderboard">
+    <div class="loading">Loading leaderboard data...</div>
+  </div>
 
-  const version = "14.13.1"; // Riot patch version
-  const sheetUrl = "https://opensheet.elk.sh/1ZFYi3A64qEakS77vDrYDDOTTsOUkR0YSDhliqQoRTKI/Dashboard";
+  <script>
+    const version = "14.13.1"; // Riot patch version
+    const sheetUrl = "https://opensheet.elk.sh/1_wFnHQMXGUE5O05HMbY1SO_rb_R9uNmlbewGdhpx7ps/Dashboard";
 
-  fetch(sheetUrl)
-    .then(res => {
-      if (!res.ok) throw new Error("Network response not ok");
-      return res.json();
-    })
-    .then(data => {
-      console.log(data); // Debug the data here
-      data.sort((a, b) =>
-        parseFloat(b["Win Rate"]) - parseFloat(a["Win Rate"])
-      );
+    async function loadLeaderboard() {
+      try {
+        const response = await fetch(sheetUrl);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        console.log('Raw fetched data:', data); // Debug the data
+        
+        if (!data || data.length === 0) {
+          throw new Error('No data received from the sheet');
+        }
 
-      data.forEach(player => {
-        const champName = player["Most Played Champion"].split(" ")[0];
-        const duoName = player["Most Played Duo"].split(" ")[0];
-        const champImg = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champName}.png`;
-        const duoIcon = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/29.png`;
+        // Filter out empty objects and get the actual data
+        const filteredData = data.filter(row => {
+          const playerName = row["ARENA STATS DASHBOARD - 7/9/2025"];
+          return playerName && playerName !== "Player" && playerName.trim() !== "";
+        });
 
-        document.getElementById("leaderboard").innerHTML += `
-          <div class="card">
-            <img class="champion-icon" src="${champImg}" alt="${champName}" />
-            <div class="info">
-              <div class="player-name">${player["Player"]}</div>
-              <div class="stat">🏆 Win Rate: ${player["Win Rate"]}</div>
-              <div class="stat">⚔️ KDA Ratio: ${player["KDA Ratio"]}</div>
-              <div class="stat">💥 Avg Damage: ${player["Avg Damage"]}</div>
-              <div class="stat">🛡️ Most Played Champion: ${player["Most Played Champion"]}</div>
-              <div class="stat">🤝 Most Played Duo: ${player["Most Played Duo"]} <img class="duo-icon" src="${duoIcon}" /></div>
-              <div class="stat">🥇 1st Place Finishes: ${player["1st"]}</div>
+        console.log('Filtered data:', filteredData); // Debug filtered data
+
+        if (filteredData.length === 0) {
+          throw new Error('No valid player data found');
+        }
+
+        // Clear loading message
+        document.getElementById("leaderboard").innerHTML = '';
+
+        // Since we can't sort by win rate (not in the current data structure), 
+        // we'll display players in the order they appear
+        filteredData.forEach(player => {
+          const playerName = player["ARENA STATS DASHBOARD - 7/9/2025"];
+          const placement = player["undefined"] || 'N/A';
+          
+          // For now, we'll use placeholder data since the sheet structure doesn't match
+          const leaderboardHtml = `
+            <div class="card">
+              <img class="champion-icon" src="https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/Aatrox.png" alt="Champion" />
+              <div class="info">
+                <div class="player-name">${playerName}</div>
+                <div class="stat">🏆 Recent Placement: ${placement}</div>
+                <div class="stat">⚔️ KDA Ratio: N/A</div>
+                <div class="stat">💥 Avg Damage: N/A</div>
+                <div class="stat">🛡️ Most Played Champion: N/A</div>
+                <div class="stat">🤝 Most Played Duo: N/A</div>
+                <div class="stat">🥇 1st Place Finishes: N/A</div>
+              </div>
             </div>
+          `;
+          
+          document.getElementById("leaderboard").innerHTML += leaderboardHtml;
+        });
+
+      } catch (error) {
+        console.error("Error loading leaderboard:", error);
+        document.getElementById("leaderboard").innerHTML = `
+          <div class="error">
+            Failed to load leaderboard data: ${error.message}<br>
+            <small>Check the console for more details.</small>
           </div>
         `;
-      });
-    })
-    .catch(err => {
-      console.error("Fetch error:", err);
-      document.getElementById("leaderboard").innerText = "Failed to load leaderboard data.";
-    });
-</script>
+      }
+    }
+
+    // Load the leaderboard when the page loads
+    window.addEventListener('DOMContentLoaded', loadLeaderboard);
+  </script>
 </body>
 </html>
