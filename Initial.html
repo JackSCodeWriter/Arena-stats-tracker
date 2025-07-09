@@ -1,94 +1,76 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2487.6">
-  <style type="text/css">
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; -webkit-text-stroke: #000000; min-height: 14.0px}
-    span.s1 {font-kerning: none}
-    span.s2 {font: 12.0px 'Lucida Grande'; font-kerning: none}
-    span.s3 {font: 12.0px 'Apple Color Emoji'; font-kerning: none}
+  <meta charset="UTF-8" />
+  <title>League Arena Leaderboard</title>
+  <style>
+    body { font-family: Arial; background: #0f1923; color: #fff; padding: 20px; }
+    h1 { color: #e0b42f; }
+    .card {
+      background: #1c2733;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      display: flex;
+      align-items: center;
+    }
+    .champion-icon {
+      width: 60px;
+      height: 60px;
+      margin-right: 15px;
+      border-radius: 5px;
+    }
+    .duo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-left: 10px;
+      border: 2px solid #ccc;
+    }
+    .info { flex-grow: 1; }
+    .player-name { font-size: 1.5em; color: #ffd700; }
+    .stat { margin: 4px 0; }
   </style>
 </head>
 <body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="en"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;meta charset="UTF-8" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;title&gt;League Arena Leaderboard&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>body { font-family: Arial; background: #0f1923; color: #fff; padding: 20px; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>h1 { color: #e0b42f; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.card {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>background: #1c2733;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>border-radius: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>padding: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>margin: 15px 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>display: flex;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>align-items: center;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.champion-icon {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>width: 60px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>height: 60px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>margin-right: 15px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>border-radius: 5px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.duo-icon {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>width: 40px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>height: 40px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>border-radius: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>margin-left: 10px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>border: 2px solid #ccc;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.info { flex-grow: 1; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.player-name { font-size: 1.5em; color: #ffd700; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>.stat { margin: 4px 0; }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;h1&gt;Arena Leaderboard (Ranked by Win Rate)&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div id="leaderboard"&gt;&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const version = "14.13.1"; // Riot patch version</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const sheetUrl = "https://opensheet.elk.sh/1ZFYi3A64qEakS77vDrYDDOTTsOUkR0YSDhliqQoRTKI/Dashboard”;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>fetch(sheetUrl)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.then(res =&gt; res.json())</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>.then(data =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Sort by win rate (remove % and parse to float)</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>data.sort((a, b) =&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>parseFloat(b["Win Rate"]) - parseFloat(a["Win Rate"])</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>data.forEach(player =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>const champName = player["Most Played Champion"].split(" ")[0]; // e.g., "Ahri (6)" </span><span class="s2">→</span><span class="s1"> "Ahri"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>const duoName = player["Most Played Duo"].split(" ")[0];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>const champImg = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champName}.png`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>const duoIcon = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/29.png`; // Use default or custom mapping</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>document.getElementById("leaderboard").innerHTML += `</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="card"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;img class="champion-icon" src="${champImg}" alt="${champName}" /&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;div class="info"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="player-name"&gt;${player["Player"]}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="stat"&gt;</span><span class="s3">🏆</span><span class="s1"> Win Rate: ${player["Win Rate"]}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="stat"&gt;</span><span class="s3">⚔️</span><span class="s1"> KDA Ratio: ${player["KDA Ratio"]}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="stat"&gt;</span><span class="s3">💥</span><span class="s1"> Avg Damage: ${player["Avg Damage"]}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="stat"&gt;</span><span class="s3">🛡️</span><span class="s1"> Most Played Champion: ${player["Most Played Champion"]}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="stat"&gt;</span><span class="s3">🤝</span><span class="s1"> Most Played Duo: ${player["Most Played Duo"]} &lt;img class="duo-icon" src="${duoIcon}" /&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="stat"&gt;</span><span class="s3">🥇</span><span class="s1"> 1st Place Finishes: ${player["1st"]}&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+  <h1>Arena Leaderboard (Ranked by Win Rate)</h1>
+  <div id="leaderboard"></div>
+
+  <script>
+    const version = "14.13.1"; // Riot patch version
+    const sheetUrl = "https://opensheet.elk.sh/1ZFYi3A64qEakS77vDrYDDOTTsOUkR0YSDhliqQoRTKI/Dashboard”;
+
+    fetch(sheetUrl)
+      .then(res => res.json())
+      .then(data => {
+        // Sort by win rate (remove % and parse to float)
+        data.sort((a, b) =>
+          parseFloat(b["Win Rate"]) - parseFloat(a["Win Rate"])
+        );
+
+        data.forEach(player => {
+          const champName = player["Most Played Champion"].split(" ")[0]; // e.g., "Ahri (6)" → "Ahri"
+          const duoName = player["Most Played Duo"].split(" ")[0];
+          const champImg = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champName}.png`;
+          const duoIcon = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/29.png`; // Use default or custom mapping
+
+          document.getElementById("leaderboard").innerHTML += `
+            <div class="card">
+              <img class="champion-icon" src="${champImg}" alt="${champName}" />
+              <div class="info">
+                <div class="player-name">${player["Player"]}</div>
+                <div class="stat">🏆 Win Rate: ${player["Win Rate"]}</div>
+                <div class="stat">⚔️ KDA Ratio: ${player["KDA Ratio"]}</div>
+                <div class="stat">💥 Avg Damage: ${player["Avg Damage"]}</div>
+                <div class="stat">🛡️ Most Played Champion: ${player["Most Played Champion"]}</div>
+                <div class="stat">🤝 Most Played Duo: ${player["Most Played Duo"]} <img class="duo-icon" src="${duoIcon}" /></div>
+                <div class="stat">🥇 1st Place Finishes: ${player["1st"]}</div>
+              </div>
+            </div>
+          `;
+        });
+      });
+  </script>
 </body>
 </html>
+
