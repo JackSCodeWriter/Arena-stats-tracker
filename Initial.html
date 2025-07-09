@@ -43,29 +43,62 @@
 
   <script>
     const version = "14.13.1"; // Riot patch version
-    const sheetUrl = "https://opensheet.elk.sh/1_wFnHQMXGUE5O05HMbY1SO_rb_R9uNmlbewGdhpx7ps/Dashboard";
+    const sheetUrl = "https://docs.google.com/spreadsheets/d/1_wFnHQMXGUE5O05HMbY1SO_rb_R9uNmlbewGdhpx7ps/gviz/tq?tqx=out:json&sheet=Dashboard";
 
     async function loadLeaderboard() {
       try {
-        const response = await fetch(sheetUrl);
+        console.log('Starting to fetch data from:', sheetUrl);
+        
+        const response = await fetch(sheetUrl, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+          }
+        });
+        
+        console.log('Response status:', response.status);
         
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        const data = await response.json();
-        console.log('Fetched data:', data); // Debug the data
+        const textData = await response.text();
+        console.log('Raw response:', textData.substring(0, 200) + '...');
         
-        if (!data || data.length === 0) {
-          throw new Error('No data received from the sheet');
+        // Google Sheets JSON response starts with ")]}'" - need to remove it
+        const jsonData = textData.substring(textData.indexOf('{'));
+        const parsedData = JSON.parse(jsonData);
+        
+        console.log('Parsed data:', parsedData);
+        
+        if (!parsedData.table || !parsedData.table.rows) {
+          throw new Error('No table data found in response');
         }
-
+        
+        const rows = parsedData.table.rows;
+        const headers = parsedData.table.cols.map(col => col.label || col.id);
+        
+        console.log('Headers:', headers);
+        console.log('Rows:', rows);
+        
+        // Convert Google Sheets format to our expected format
+        const data = rows.map(row => {
+          const playerData = {};
+          headers.forEach((header, index) => {
+            const cellValue = row.c[index] ? row.c[index].v : '';
+            playerData[header] = cellValue;
+          });
+          return playerData;
+        });
+        
+        console.log('Converted data:', data);
+        
         // Filter out empty rows and header row if needed
         const filteredData = data.filter(row => {
-          return row.Player && row.Player !== "Player" && row.Player.trim() !== "";
+          return row.Player && row.Player !== "Player" && row.Player.toString().trim() !== "";
         });
 
-        console.log('Filtered data:', filteredData); // Debug filtered data
+        console.log('Filtered data:', filteredData);
 
         if (filteredData.length === 0) {
           throw new Error('No valid player data found');
@@ -84,9 +117,9 @@
         filteredData.forEach(player => {
           // Handle missing or undefined values
           const champName = player["Most Played Champion"] ? 
-            player["Most Played Champion"].split(" ")[0] : "Aatrox";
+            player["Most Played Champion"].toString().split(" ")[0] : "Aatrox";
           const duoName = player["Most Played Duo"] ? 
-            player["Most Played Duo"].split(" ")[0] : "Unknown";
+            player["Most Played Duo"].toString().split(" ")[0] : "Unknown";
           const champImg = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champName}.png`;
           const duoIcon = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/29.png`;
 
