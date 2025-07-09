@@ -36,41 +36,46 @@
   <h1>Arena Leaderboard (Ranked by Win Rate)</h1>
   <div id="leaderboard"></div>
 
-  <script>
-    const version = "14.13.1"; // Riot patch version
-    const sheetUrl = "https://opensheet.elk.sh/1ZFYi3A64qEakS77vDrYDDOTTsOUkR0YSDhliqQoRTKI/Dashboard”;
+  const version = "14.13.1"; // Riot patch version
+  const sheetUrl = "https://opensheet.elk.sh/1ZFYi3A64qEakS77vDrYDDOTTsOUkR0YSDhliqQoRTKI/Dashboard";
 
-    fetch(sheetUrl)
-      .then(res => res.json())
-      .then(data => {
-        // Sort by win rate (remove % and parse to float)
-        data.sort((a, b) =>
-          parseFloat(b["Win Rate"]) - parseFloat(a["Win Rate"])
-        );
+  fetch(sheetUrl)
+    .then(res => {
+      if (!res.ok) throw new Error("Network response not ok");
+      return res.json();
+    })
+    .then(data => {
+      console.log(data); // Debug the data here
+      data.sort((a, b) =>
+        parseFloat(b["Win Rate"]) - parseFloat(a["Win Rate"])
+      );
 
-        data.forEach(player => {
-          const champName = player["Most Played Champion"].split(" ")[0]; // e.g., "Ahri (6)" → "Ahri"
-          const duoName = player["Most Played Duo"].split(" ")[0];
-          const champImg = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champName}.png`;
-          const duoIcon = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/29.png`; // Use default or custom mapping
+      data.forEach(player => {
+        const champName = player["Most Played Champion"].split(" ")[0];
+        const duoName = player["Most Played Duo"].split(" ")[0];
+        const champImg = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champName}.png`;
+        const duoIcon = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/29.png`;
 
-          document.getElementById("leaderboard").innerHTML += `
-            <div class="card">
-              <img class="champion-icon" src="${champImg}" alt="${champName}" />
-              <div class="info">
-                <div class="player-name">${player["Player"]}</div>
-                <div class="stat">🏆 Win Rate: ${player["Win Rate"]}</div>
-                <div class="stat">⚔️ KDA Ratio: ${player["KDA Ratio"]}</div>
-                <div class="stat">💥 Avg Damage: ${player["Avg Damage"]}</div>
-                <div class="stat">🛡️ Most Played Champion: ${player["Most Played Champion"]}</div>
-                <div class="stat">🤝 Most Played Duo: ${player["Most Played Duo"]} <img class="duo-icon" src="${duoIcon}" /></div>
-                <div class="stat">🥇 1st Place Finishes: ${player["1st"]}</div>
-              </div>
+        document.getElementById("leaderboard").innerHTML += `
+          <div class="card">
+            <img class="champion-icon" src="${champImg}" alt="${champName}" />
+            <div class="info">
+              <div class="player-name">${player["Player"]}</div>
+              <div class="stat">🏆 Win Rate: ${player["Win Rate"]}</div>
+              <div class="stat">⚔️ KDA Ratio: ${player["KDA Ratio"]}</div>
+              <div class="stat">💥 Avg Damage: ${player["Avg Damage"]}</div>
+              <div class="stat">🛡️ Most Played Champion: ${player["Most Played Champion"]}</div>
+              <div class="stat">🤝 Most Played Duo: ${player["Most Played Duo"]} <img class="duo-icon" src="${duoIcon}" /></div>
+              <div class="stat">🥇 1st Place Finishes: ${player["1st"]}</div>
             </div>
-          `;
-        });
+          </div>
+        `;
       });
-  </script>
+    })
+    .catch(err => {
+      console.error("Fetch error:", err);
+      document.getElementById("leaderboard").innerText = "Failed to load leaderboard data.";
+    });
+</script>
 </body>
 </html>
-
