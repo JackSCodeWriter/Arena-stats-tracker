@@ -54,16 +54,15 @@
         }
         
         const data = await response.json();
-        console.log('Raw fetched data:', data); // Debug the data
+        console.log('Fetched data:', data); // Debug the data
         
         if (!data || data.length === 0) {
           throw new Error('No data received from the sheet');
         }
 
-        // Filter out empty objects and get the actual data
+        // Filter out empty rows and header row if needed
         const filteredData = data.filter(row => {
-          const playerName = row["ARENA STATS DASHBOARD - 7/9/2025"];
-          return playerName && playerName !== "Player" && playerName.trim() !== "";
+          return row.Player && row.Player !== "Player" && row.Player.trim() !== "";
         });
 
         console.log('Filtered data:', filteredData); // Debug filtered data
@@ -72,27 +71,36 @@
           throw new Error('No valid player data found');
         }
 
+        // Sort by win rate (descending) - remove % sign if present and convert to number
+        filteredData.sort((a, b) => {
+          const aRate = parseFloat(String(a["Win Rate"]).replace('%', '')) || 0;
+          const bRate = parseFloat(String(b["Win Rate"]).replace('%', '')) || 0;
+          return bRate - aRate;
+        });
+
         // Clear loading message
         document.getElementById("leaderboard").innerHTML = '';
 
-        // Since we can't sort by win rate (not in the current data structure), 
-        // we'll display players in the order they appear
         filteredData.forEach(player => {
-          const playerName = player["ARENA STATS DASHBOARD - 7/9/2025"];
-          const placement = player["undefined"] || 'N/A';
-          
-          // For now, we'll use placeholder data since the sheet structure doesn't match
+          // Handle missing or undefined values
+          const champName = player["Most Played Champion"] ? 
+            player["Most Played Champion"].split(" ")[0] : "Aatrox";
+          const duoName = player["Most Played Duo"] ? 
+            player["Most Played Duo"].split(" ")[0] : "Unknown";
+          const champImg = `https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/${champName}.png`;
+          const duoIcon = `https://raw.communitydragon.org/latest/plugins/rcp-be-lol-game-data/global/default/v1/profile-icons/29.png`;
+
           const leaderboardHtml = `
             <div class="card">
-              <img class="champion-icon" src="https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/Aatrox.png" alt="Champion" />
+              <img class="champion-icon" src="${champImg}" alt="${champName}" onerror="this.src='https://ddragon.leagueoflegends.com/cdn/${version}/img/champion/Aatrox.png'" />
               <div class="info">
-                <div class="player-name">${playerName}</div>
-                <div class="stat">🏆 Recent Placement: ${placement}</div>
-                <div class="stat">⚔️ KDA Ratio: N/A</div>
-                <div class="stat">💥 Avg Damage: N/A</div>
-                <div class="stat">🛡️ Most Played Champion: N/A</div>
-                <div class="stat">🤝 Most Played Duo: N/A</div>
-                <div class="stat">🥇 1st Place Finishes: N/A</div>
+                <div class="player-name">${player["Player"] || 'Unknown Player'}</div>
+                <div class="stat">🏆 Win Rate: ${player["Win Rate"] || 'N/A'}</div>
+                <div class="stat">⚔️ KDA Ratio: ${player["KDA Ratio"] || 'N/A'}</div>
+                <div class="stat">💥 Avg Damage: ${player["Avg Damage"] || 'N/A'}</div>
+                <div class="stat">🛡️ Most Played Champion: ${player["Most Played Champion"] || 'N/A'}</div>
+                <div class="stat">🤝 Most Played Duo: ${player["Most Played Duo"] || 'N/A'} <img class="duo-icon" src="${duoIcon}" /></div>
+                <div class="stat">🥇 1st Place Finishes: ${player["1st"] || 'N/A'}</div>
               </div>
             </div>
           `;
